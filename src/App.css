@@ -199,6 +199,36 @@ body {
   transform: translateY(1px);
 }
 
+/* Token Stats */
+.token-stats {
+  display: flex;
+  justify-content: space-around;
+  background: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
   .converter-container {

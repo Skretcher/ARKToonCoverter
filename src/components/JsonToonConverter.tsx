@@ -5,6 +5,7 @@ import { validateJson, validateToon } from '../utils/validators';
 import { JsonEditor } from './JsonEditor';
 import { ToonDisplay } from './ToonDisplay';
 import { ErrorDisplay } from './ErrorDisplay';
+import { TokenStats } from './TokenStats';
 
 export const JsonToonConverter: React.FC = () => {
   const [jsonInput, setJsonInput] = useState<string>('{\n  "name": "example",\n  "age": 30,\n  "active": true\n}');
@@ -66,8 +67,48 @@ export const JsonToonConverter: React.FC = () => {
     [conversionDirection]
   );
 
+  const countJsonTokens = (json: string) => {
+    try {
+      const parsed = JSON.parse(json);
+      let count = 0;
+  
+      const walk = (value: any) => {
+        if (Array.isArray(value)) {
+          count++; // array start
+          value.forEach(walk);
+          count++; // array end
+        } else if (value !== null && typeof value === "object") {
+          count++; // object start
+          Object.entries(value).forEach(([key, val]) => {
+            count++; // key token
+            walk(val);
+          });
+          count++; // object end
+        } else {
+          count++; // value token (num/str/bool/null)
+        }
+      };
+  
+      walk(parsed);
+      return count;
+  
+    } catch {
+      return 0;
+    }
+  };
+  
+  const countToonTokens = (toon: string) =>
+    toon.trim().split(/\r?\n/).filter(Boolean).length;
+
   const isJsonReadOnly = conversionDirection === 'toonToJson';
   const isToonReadOnly = conversionDirection === 'jsonToToon';
+
+  const jsonTokens = useMemo(() => countJsonTokens(jsonInput), [jsonInput]);
+  const toonTokens = useMemo(() => countToonTokens(toonInput), [toonInput]);
+  const savedPercentage = useMemo(() => {
+    if (jsonTokens === 0) return 0;
+    return ((jsonTokens - toonTokens) / jsonTokens) * 100;
+  }, [jsonTokens, toonTokens]);
 
   return (
     <div className="converter-container">
@@ -109,6 +150,12 @@ export const JsonToonConverter: React.FC = () => {
           Convert {directionLabel}
         </button>
       </div>
+
+      <TokenStats 
+        jsonTokens={jsonTokens}
+        toonTokens={toonTokens}
+        savedPercentage={savedPercentage}
+      />
 
       {(jsonError || toonError) && (
         <ErrorDisplay 

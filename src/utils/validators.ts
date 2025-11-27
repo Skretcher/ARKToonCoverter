@@ -1,3 +1,4 @@
+// src/utils/validators.ts
 import { ValidationResult } from './types';
 
 export function validateJson(input: string): ValidationResult {
