@@ -17,10 +17,10 @@ export const TokenStats: React.FC<TokenStatsProps> = ({ jsonTokens, toonTokens, 
         <span className="stat-label">TOON Tokens</span>
         <span className="stat-value">{toonTokens}</span>
       </div>
-      <div className="stat-item">
+      {/* <div className="stat-item">
         <span className="stat-label">Saved</span>
         <span className="stat-value">{savedPercentage.toFixed(1)}%</span>
-      </div>
+      </div> */}
     </div>
   );
 };
