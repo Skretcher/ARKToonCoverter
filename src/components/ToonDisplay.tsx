@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ToonDisplayProps {
   value: string;
@@ -15,9 +15,22 @@ export const ToonDisplay: React.FC<ToonDisplayProps> = ({
   error,
   readOnly = false
 }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="toon-display">
-      <label className="editor-label">TOON Output</label>
+      <div className="editor-header">
+        <label className="editor-label">TOON Output</label>
+        <button onClick={handleCopy} className="copy-button">
+          {copied ? 'Copied!' : 'Copy'}
+        </button>
+      </div>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}

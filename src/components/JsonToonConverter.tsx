@@ -74,6 +74,16 @@ export const JsonToonConverter: React.FC = () => {
     }
   };
 
+  const handleClear = () => {
+    if (conversionDirection === 'jsonToToon') {
+      setJsonInput('');
+      setJsonError('');
+    } else {
+      setToonInput('');
+      setToonError('');
+    }
+  };
+
   const toggleDirection = useCallback(() => {
     setConversionDirection(prev =>
       prev === 'jsonToToon' ? 'toonToJson' : 'jsonToToon'
@@ -183,6 +193,12 @@ export const JsonToonConverter: React.FC = () => {
           className="convert-button"
         >
           Convert {directionLabel}
+        </button>
+        <button
+          onClick={handleClear}
+          className="clear-button"
+        >
+          Clear Input
         </button>
       </div>
 

@@ -94,6 +94,29 @@ body {
   font-size: 1.1rem;
 }
 
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.copy-button {
+  background: #ecf0f1;
+  color: #2c3e50;
+  border: 1px solid #bdc3c7;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.3s ease;
+}
+
+.copy-button:hover {
+  background: #dde4e6;
+}
+
+
 .editor-textarea {
   width: 100%;
   padding: 15px;
@@ -176,10 +199,11 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  gap: 15px; /* Add space between buttons */
 }
 
-.convert-button {
-  background: #27ae60;
+.convert-button,
+.clear-button {
   color: white;
   border: none;
   padding: 12px 30px;
@@ -191,11 +215,24 @@ body {
   min-width: 200px;
 }
 
+.convert-button {
+  background: #27ae60;
+}
+
 .convert-button:hover {
   background: #229954;
 }
 
-.convert-button:active {
+.clear-button {
+  background: #e74c3c; /* A red color for clearing */
+}
+
+.clear-button:hover {
+  background: #c0392b;
+}
+
+.convert-button:active,
+.clear-button:active {
   transform: translateY(1px);
 }
 
