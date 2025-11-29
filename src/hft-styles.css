@@ -1,0 +1,199 @@
+/* HFT Display Styles */
+.hft-display {
+  background: #f4f7f9;
+  border: 1px solid #d1d8dd;
+  border-radius: 8px;
+  padding: 15px;
+  min-height: 300px;
+  max-height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.hft-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #e0e6eb;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.hft-tree {
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+
+.hft-node {
+  margin-bottom: 4px;
+}
+
+.hft-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.hft-header:hover {
+  background: #e9eff3;
+}
+
+.hft-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.hft-label {
+  font-weight: 500;
+  color: #34495e;
+}
+
+.hft-key {
+  font-weight: bold;
+  color: #c0392b;
+}
+
+.hft-arrow {
+  margin: 0 8px;
+  color: #7f8c8d;
+}
+
+.hft-toggle {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  padding: 0 5px;
+}
+
+.hft-key-value .hft-header,
+.hft-array-item .hft-header {
+  cursor: default;
+}
+
+.hft-key-value .hft-header:hover,
+.hft-array-item .hft-header:hover {
+  background: none;
+}
+
+/* HFT View Specifics */
+.toon-view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.view-toggle-btn {
+  background: #ecf0f1;
+  border: 1px solid #bdc3c7;
+  color: #7f8c8d;
+  padding: 5px 15px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.view-toggle-btn:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.view-toggle-btn:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-left: none;
+}
+
+.view-toggle-btn.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.hft-error {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.hft-placeholder {
+  color: #95a5a6;
+  text-align: center;
+  padding-top: 50px;
+}
+
+/* Fullscreen Modal Styles */
+.hft-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.hft-modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90vw;
+  height: 90vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hft-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  z-index: 1001;
+}
+
+.hft-modal-close:hover {
+  color: #333;
+}
+
+.hft-display.fullscreen {
+  height: 100%;
+  max-height: none;
+  min-height: auto;
+}
+
+.hft-display.fullscreen .hft-tree {
+  flex: 1;
+  overflow: auto;
+}
+
+.hft-fullscreen-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.hft-fullscreen-btn:hover {
+  background: #2980b9;
+}
+
+.hft-title {
+  display: flex;
+  align-items: center;
+}

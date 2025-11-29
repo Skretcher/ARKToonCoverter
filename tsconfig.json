@@ -16,6 +16,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "test-hft.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

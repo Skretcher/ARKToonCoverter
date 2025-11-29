@@ -4,6 +4,7 @@ import { convertToonToJson } from '../utils/toonToJsonConverter';
 import { validateJson, validateToon } from '../utils/validators';
 import { JsonEditor } from './JsonEditor';
 import { ToonDisplay } from './ToonDisplay';
+import { HFTDisplay } from './HFTDisplay';
 import { ErrorDisplay } from './ErrorDisplay';
 import { TokenStats } from './TokenStats';
 
@@ -13,6 +14,23 @@ export const JsonToonConverter: React.FC = () => {
   const [jsonError, setJsonError] = useState<string>('');
   const [toonError, setToonError] = useState<string>('');
   const [conversionDirection, setConversionDirection] = useState<'jsonToToon' | 'toonToJson'>('jsonToToon');
+  const [toonViewMode, setToonViewMode] = useState<'text' | 'hft'>('text');
+  const [isHftFullscreen, setIsHftFullscreen] = useState<boolean>(false);
+
+  // Ensure always starts in plain text view on page load
+  React.useEffect(() => {
+    setToonViewMode('text');
+    setIsHftFullscreen(false);
+  }, []);
+
+  // Auto-open fullscreen when switching to HFT view
+  React.useEffect(() => {
+    if (toonViewMode === 'hft') {
+      setIsHftFullscreen(true);
+    } else {
+      setIsHftFullscreen(false);
+    }
+  }, [toonViewMode]);
 
   // Convert JSON to TOON
   const handleConvertJsonToToon = () => {
@@ -26,7 +44,7 @@ export const JsonToonConverter: React.FC = () => {
 
     setJsonError('');
     const result = convertJsonToToon(jsonInput);
-    
+
     if (result.success) {
       setToonInput(result.data);
       setToonError('');
@@ -47,7 +65,7 @@ export const JsonToonConverter: React.FC = () => {
 
     setToonError('');
     const result = convertToonToJson(toonInput);
-    
+
     if (result.success) {
       setJsonInput(result.data);
       setJsonError('');
@@ -57,13 +75,13 @@ export const JsonToonConverter: React.FC = () => {
   };
 
   const toggleDirection = useCallback(() => {
-    setConversionDirection(prev => 
+    setConversionDirection(prev =>
       prev === 'jsonToToon' ? 'toonToJson' : 'jsonToToon'
     );
   }, []);
 
-  const directionLabel = useMemo(() => 
-    conversionDirection === 'jsonToToon' ? 'JSON → TOON' : 'TOON → JSON',
+  const directionLabel = useMemo(() =>
+    conversionDirection === 'jsonToToon' ? 'JSON → TOON' : 'JSON ← TOON',
     [conversionDirection]
   );
 
@@ -71,7 +89,7 @@ export const JsonToonConverter: React.FC = () => {
     try {
       const parsed = JSON.parse(json);
       let count = 0;
-  
+
       const walk = (value: any) => {
         if (Array.isArray(value)) {
           count++; // array start
@@ -88,15 +106,15 @@ export const JsonToonConverter: React.FC = () => {
           count++; // value token (num/str/bool/null)
         }
       };
-  
+
       walk(parsed);
       return count;
-  
+
     } catch {
       return 0;
     }
   };
-  
+
   const countToonTokens = (toon: string) =>
     toon.trim().split(/\r?\n/).filter(Boolean).length;
 
@@ -114,7 +132,7 @@ export const JsonToonConverter: React.FC = () => {
     <div className="converter-container">
       <div className="converter-header">
         <h1>JSON ↔ TOON Converter</h1>
-        <button 
+        <button
           onClick={toggleDirection}
           className="direction-toggle"
         >
@@ -133,17 +151,34 @@ export const JsonToonConverter: React.FC = () => {
         </div>
 
         <div className="output-section">
-          <ToonDisplay
-            value={toonInput}
-            onChange={setToonInput}
-            error={toonError}
-            readOnly={isToonReadOnly}
-          />
+          <div className="toon-view-toggle">
+            <button
+              onClick={() => setToonViewMode('text')}
+              className={`view-toggle-btn ${toonViewMode === 'text' ? 'active' : ''}`}
+            >
+              Plain Text
+            </button>
+            <button
+              onClick={() => setToonViewMode('hft')}
+              className={`view-toggle-btn ${toonViewMode === 'hft' ? 'active' : ''}`}
+            >
+              Visual Tree
+            </button>
+          </div>
+
+          {toonViewMode === 'text' && (
+            <ToonDisplay
+              value={toonInput}
+              onChange={setToonInput}
+              error={toonError}
+              readOnly={isToonReadOnly}
+            />
+          )}
         </div>
       </div>
 
       <div className="converter-actions">
-        <button 
+        <button
           onClick={conversionDirection === 'jsonToToon' ? handleConvertJsonToToon : handleConvertToonToJson}
           className="convert-button"
         >
@@ -151,17 +186,34 @@ export const JsonToonConverter: React.FC = () => {
         </button>
       </div>
 
-      <TokenStats 
+      <TokenStats
         jsonTokens={jsonTokens}
         toonTokens={toonTokens}
         savedPercentage={savedPercentage}
       />
 
       {(jsonError || toonError) && (
-        <ErrorDisplay 
-          error={jsonError || toonError} 
+        <ErrorDisplay
+          error={jsonError || toonError}
           type={jsonError ? 'error' : 'warning'}
         />
+      )}
+
+      {isHftFullscreen && (
+        <div className="hft-modal-overlay" onClick={() => { setIsHftFullscreen(false); setToonViewMode('text'); }}>
+          <div className="hft-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => { setIsHftFullscreen(false); setToonViewMode('text'); }}
+              className="hft-modal-close"
+            >
+              ×
+            </button>
+            <HFTDisplay
+              toonInput={toonInput}
+              isFullscreen={true}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
